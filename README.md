@@ -29,13 +29,13 @@ This plugin is **not installed by default** by our higher-level packages like `r
 
     ```bash
     # When using npm
-    npm install @expressive-code/plugin-output
+    npm install expressive-code-plugin-output
 
     # When using pnpm
-    pnpm install @expressive-code/plugin-output
+    pnpm install expressive-code-plugin-output
 
     # When using yarn
-    yarn add @expressive-code/plugin-output
+    yarn add expressive-code-plugin-output
     ```
 
 2. Add the integration to your site's configuration by passing it in the `plugins` list.  
@@ -45,7 +45,7 @@ This plugin is **not installed by default** by our higher-level packages like `r
     // astro.config.mjs
     import { defineConfig } from 'astro/config'
     import astroExpressiveCode from 'astro-expressive-code'
-    import { pluginOutput } from '@expressive-code/plugin-output'
+    import { pluginOutput } from 'expressive-code-plugin-output'
 
     export default defineConfig({
       integrations: [
@@ -87,7 +87,7 @@ In your Astro config file, you can pass options to the output plugin like this:
 // astro.config.mjs
 import { defineConfig } from 'astro/config'
 import astroExpressiveCode from 'astro-expressive-code'
-import { pluginOutput } from '@expressive-code/plugin-output'
+import { pluginOutput } from 'expressive-code-plugin-output'
 
 /** @type {import('astro-expressive-code').AstroExpressiveCodeOptions} */
 const astroExpressiveCodeOptions = {
@@ -114,7 +114,7 @@ export default defineConfig({
 // next.config.mjs
 import createMDX from '@next/mdx'
 import remarkExpressiveCode from 'remark-expressive-code'
-import { pluginOutput } from '@expressive-code/plugin-output'
+import { pluginOutput } from 'expressive-code-plugin-output'
 
 /** @type {import('remark-expressive-code').RemarkExpressiveCodeOptions} */
 const remarkExpressiveCodeOptions = {

@@ -1,7 +1,8 @@
-import { AttachedPluginData, ExpressiveCodePlugin, addClass, replaceDelimitedValues } from '@expressive-code/core'
+import { AttachedPluginData, ExpressiveCodePlugin, replaceDelimitedValues } from '@expressive-code/core'
 import rangeParser from 'parse-numeric-range'
-import { selectAll } from 'hast-util-select'
-import { outputStyleSettings, getOutputBaseStyles, outputClass } from './styles'
+import { outputStyleSettings, getOutputBaseStyles } from './styles'
+import { OutputAnnotation } from './annotations'
+import { InlineStyleAnnotation } from '@expressive-code/core'
 
 export interface PluginOutputOptions {
 	styleOverrides?: Partial<typeof outputStyleSettings.defaultSettings> | undefined
@@ -30,24 +31,19 @@ export function pluginOutput(options: PluginOutputOptions = {}): ExpressiveCodeP
 					}
 				)
 			},
-			annotateCode: () => {
-				return
-			},
-			postprocessRenderedBlock: ({ codeBlock, renderData }) => {
+			annotateCode: ({ codeBlock }) => {
 				const data = pluginOutputData.getOrCreateFor(codeBlock)
-				if (data.lines.length == 0) {
-					return
-				}
-				const lines = selectAll('pre > code div.ec-line', renderData.blockAst)
-				data.lines.forEach((linenum) => {
-					if (linenum >= lines.length) {
-						return
-					}
-					const line = lines[linenum]
-					addClass(line, outputClass)
-					line.children.forEach((span) => {
-						if (span.type === 'element' && span.properties) {
-							span.properties.style = null
+				data.lines.forEach((lineNumber) => {
+					codeBlock.getLine(lineNumber)?.addAnnotation(new OutputAnnotation({}))
+				})
+			},
+			postprocessAnnotations: ({ codeBlock }) => {
+				const data = pluginOutputData.getOrCreateFor(codeBlock)
+				data.lines.forEach((lineNumber) => {
+					const line = codeBlock.getLine(lineNumber)
+					line?.getAnnotations().forEach((ann) => {
+						if (ann instanceof InlineStyleAnnotation) {
+							line.deleteAnnotation(ann);
 						}
 					})
 				})
